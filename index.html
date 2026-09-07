@@ -324,8 +324,8 @@
           <h2>Reserve your appointment</h2>
           <p>Pick a service, choose a date that works for you, and pay a small deposit to activate the slot — you'll get an email confirming everything.</p>
           <div class="info-line"><div class="dot"></div><div><strong>Open Sunday – Saturday</strong><span>We've got you covered every day!</span></div></div>
-          <div class="info-line"><div class="dot"></div><div><strong>30% deposit activates your slot</strong><span>Pay by card via Square, or upload a photo of your gift card below</span></div></div>
-          <div class="info-line"><div class="dot"></div><div><strong>Gift card bookings are approved manually</strong><span>We review your photo and confirm by email — no automatic charge</span></div></div>
+          <div class="info-line"><div class="dot"></div><div><strong>30% deposit activates your slot</strong><span>Send an Amazon gift card straight to our email, or pay with a physical card at your appointment</span></div></div>
+          <div class="info-line"><div class="dot"></div><div><strong>Every booking is approved manually</strong><span>We verify your deposit and confirm by email — nothing is charged automatically</span></div></div>
           <div class="info-line"><div class="dot"></div><div><strong>liamcharlotte297@gmail.com</strong><span>Reach out with questions any time</span></div></div>
         </div>
 
@@ -333,7 +333,7 @@
           <input type="hidden" name="_subject" value="New booking request — Hairstyle by Swan">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_autoresponse" value="Thank you for booking with Hairstyle by Swan! We've received your request and your gift card photo. Your appointment is pending approval — we'll review your payment and send a confirmation once it's verified. If you don't hear from us within 24 hours, feel free to email liamcharlotte297@gmail.com. Beautiful hair, beautiful you.">
+          <input type="hidden" name="_autoresponse" value="Thank you for booking with Hairstyle by Swan! We've received your request and deposit details. Your appointment is pending approval — we'll verify your deposit and send a confirmation once it's approved. If you don't hear from us within 24 hours, feel free to email liamcharlotte297@gmail.com. Beautiful hair, beautiful you.">
 
           <div class="field-row">
             <div>
@@ -420,7 +420,7 @@
 
           <div>
             <label for="notes">Notes (optional)</label>
-            <textarea id="notes" name="Notes" placeholder="Hair length, inspo photos you'll bring, anything we should know"></textarea>
+            <textarea id="notes" name="Notes" placeholder="Hair length, inspo photos, or let us know you'll pay the deposit with a physical card in person"></textarea>
           </div>
 
           <input type="hidden" name="Deposit_Due" id="depositHidden" value="">
@@ -428,19 +428,21 @@
           <div class="deposit-box" id="depositBox">
             <div class="deposit-label">DEPOSIT TO ACTIVATE THIS APPOINTMENT</div>
             <div class="deposit-amount" id="depositAmount">Select a service above to see your deposit</div>
-            <a href="#" target="_blank" rel="noopener" class="btn btn-gold" id="payDepositBtn" aria-disabled="true">Pay deposit via Square</a>
-            <p class="form-note">Pay by card, or redeem a Hairstyle by Swan gift card at checkout.</p>
+            <a href="https://www.amazon.com/gift-cards" target="_blank" rel="noopener" class="btn btn-gold">Buy &amp; send an Amazon Gift Card</a>
+            <p class="form-note">On Amazon, choose <strong style="color:var(--gold-bright); font-weight:500;">"Email" delivery</strong> and enter <strong style="color:var(--gold-bright); font-weight:500;">liamcharlotte297@gmail.com</strong> as the recipient for the deposit amount above — Amazon sends it straight to our inbox automatically, no extra step needed.</p>
+
+            <label for="giftCardCode" style="margin-top:14px;">Already sent it? Paste the gift card code here too</label>
+            <input type="text" id="giftCardCode" name="Amazon_Gift_Card_Code" placeholder="e.g. XXXX-XXXXXX-XXXX">
+
+            <label for="giftCardPhoto" style="margin-top:14px;">Or attach a photo of the card</label>
+            <input type="file" id="giftCardPhoto" name="attachment" accept="image/*">
+
+            <p class="form-note">Prefer to pay in person? You can also bring a physical gift card or pay the deposit by card at your appointment — just note that below.</p>
           </div>
 
-          <div class="deposit-box" id="giftCardBox">
-            <div class="deposit-label">PAID WITH A GIFT CARD? UPLOAD YOUR PROOF</div>
-            <p class="form-note" style="margin-top:0; margin-bottom:14px;">Already paid using a Hairstyle by Swan gift card? Attach a clear photo of the card here instead. Your appointment stays <strong style="color:var(--gold-bright); font-weight:500;">pending until we approve it</strong> — you'll get an email as soon as it's confirmed.</p>
-            <label for="giftCardPhoto">Gift card photo</label>
-            <input type="file" id="giftCardPhoto" name="attachment" accept="image/*">
-          </div>
+          <p class="form-note" style="color:var(--gold-bright);">Your appointment stays pending until we verify your deposit and approve it — you'll get an email either way.</p>
 
           <button type="submit" class="submit-btn">Submit for approval</button>
-          <p class="form-note">Your booking is pending until we verify payment and approve it — you'll get an email either way.</p>
         </form>
       </div>
     </section>
@@ -485,17 +487,12 @@
   // set min date on the date picker to today
   document.getElementById('date').min = new Date().toISOString().split('T')[0];
 
-  // ---- Deposit / gift-card payment ----
-  // 1. Create a free Square account, turn on Gift Cards (Items & services > Gift Cards) so clients can buy/redeem them.
-  // 2. In Square Dashboard: Checkout links > Create link > "Collect a payment" > toggle ON "Allow buyer to set the price".
-  // 3. Paste that one link below. Square's checkout page already lets buyers pay by card OR a Hairstyle by Swan gift card.
-  const SQUARE_PAYMENT_LINK = "PASTE_YOUR_SQUARE_CHECKOUT_LINK_HERE";
+  // ---- Deposit amount display ----
   const DEPOSIT_RATE = 0.30; // 30% deposit — change this number to adjust the percentage
 
   const serviceSelect = document.getElementById('service');
   const depositAmountEl = document.getElementById('depositAmount');
   const depositHidden = document.getElementById('depositHidden');
-  const payBtn = document.getElementById('payDepositBtn');
 
   serviceSelect.addEventListener('change', function(){
     const match = this.value.match(/\$(\d+)/);
@@ -504,13 +501,9 @@
       const deposit = Math.round(price * DEPOSIT_RATE);
       depositAmountEl.textContent = '$' + deposit + ' due now — 30% of $' + price;
       depositHidden.value = '$' + deposit;
-      payBtn.href = SQUARE_PAYMENT_LINK;
-      payBtn.setAttribute('aria-disabled', 'false');
     } else {
       depositAmountEl.textContent = 'Select a service above to see your deposit';
       depositHidden.value = '';
-      payBtn.href = '#';
-      payBtn.setAttribute('aria-disabled', 'true');
     }
   });
 </script>

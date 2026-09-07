@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hairstyle by Swan — Book an Appointment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Montserrat:wght@300;400;500;600&family=Tangerine:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0b0a08;
+    --black-soft:#141210;
+    --gold:#c9a03e;
+    --gold-bright:#e8c76a;
+    --gold-deep:#8a6c22;
+    --ivory:#f3ecda;
+    --ivory-dim:#cfc6ac;
+    --line: rgba(201,160,62,0.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--black);
+    color:var(--ivory);
+    font-family:'Montserrat', sans-serif;
+    font-weight:300;
+    line-height:1.6;
+  }
+  h1,h2,h3{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:500;
+    margin:0;
+    color:var(--ivory);
+  }
+  .script{
+    font-family:'Tangerine', cursive;
+    font-weight:700;
+    color:var(--gold-bright);
+    line-height:1;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1100px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,10,8,0.9);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .brand{font-family:'Cormorant Garamond',serif; font-size:1.3rem; letter-spacing:0.04em;}
+  .brand .script{font-size:1.9rem; margin-left:4px;}
+  nav ul{list-style:none; display:flex; gap:34px; margin:0; padding:0;}
+  nav a{text-decoration:none; font-size:0.82rem; letter-spacing:0.06em; color:var(--ivory-dim); transition:color .2s;}
+  nav a:hover{color:var(--gold-bright);}
+  .nav-book{
+    border:1px solid var(--gold); padding:8px 18px; border-radius:2px; font-size:0.78rem;
+  }
+  .nav-book:hover{background:var(--gold); color:var(--black);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:88vh;
+    display:flex;
+    align-items:flex-end;
+    background:#000 url('cover.jpg') center 20% / cover no-repeat;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,10,8,0.05) 0%, rgba(11,10,8,0.35) 55%, rgba(11,10,8,0.97) 100%);
+  }
+  .hero-inner{position:relative; z-index:2; padding-bottom:64px; width:100%;}
+  .hero-eyebrow{color:var(--gold-bright); font-size:0.8rem; letter-spacing:0.18em; margin-bottom:10px;}
+  .hero h1{font-size:clamp(2.6rem, 6vw, 4.4rem); font-style:italic; max-width:640px;}
+  .hero p{color:var(--ivory-dim); max-width:440px; margin-top:16px; font-size:1rem;}
+  .hero-actions{margin-top:32px; display:flex; gap:18px; flex-wrap:wrap;}
+  .btn{
+    display:inline-block; padding:14px 30px; text-decoration:none;
+    font-size:0.82rem; letter-spacing:0.06em; border-radius:2px; transition:all .2s;
+  }
+  .btn-gold{background:var(--gold); color:var(--black); border:1px solid var(--gold);}
+  .btn-gold:hover{background:transparent; color:var(--gold-bright);}
+  .btn-ghost{border:1px solid var(--ivory-dim); color:var(--ivory);}
+  .btn-ghost:hover{border-color:var(--gold-bright); color:var(--gold-bright);}
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:88px 0;}
+  .section-head{max-width:560px; margin-bottom:52px;}
+  .section-head .kicker{color:var(--gold); font-size:0.78rem; letter-spacing:0.14em; margin-bottom:10px; display:block;}
+  .section-head h2{font-size:2.4rem; font-style:italic;}
+  .section-head p{color:var(--ivory-dim); margin-top:14px; font-size:0.95rem;}
+
+  /* ---------- ABOUT STRIP ---------- */
+  .about{border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--black-soft);}
+  .about .wrap{display:grid; grid-template-columns:1fr 1fr 1fr; gap:36px; padding:44px 28px;}
+  .about-item{text-align:center;}
+  .about-item .num{font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:var(--gold-bright); font-style:italic;}
+  .about-item p{font-size:0.82rem; color:var(--ivory-dim); margin-top:6px; letter-spacing:0.03em;}
+
+  /* ---------- SERVICES / PRICING ---------- */
+  .toggle-row{display:flex; gap:0; margin-bottom:40px; border:1px solid var(--line); width:fit-content;}
+  .toggle-btn{
+    padding:12px 26px; background:none; border:none; color:var(--ivory-dim);
+    font-family:'Montserrat',sans-serif; font-size:0.8rem; letter-spacing:0.05em; cursor:pointer;
+  }
+  .toggle-btn.active{background:var(--gold); color:var(--black);}
+  .price-panel{display:none;}
+  .price-panel.active{display:block; animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .price-groups{display:grid; grid-template-columns:1fr 1fr; gap:0 60px;}
+  .price-group{margin-bottom:36px;}
+  .price-group h3{font-size:1.2rem; color:var(--gold-bright); font-style:italic; padding-bottom:10px; border-bottom:1px solid var(--line); margin-bottom:14px;}
+  .price-line{display:flex; justify-content:space-between; align-items:baseline; padding:9px 0; border-bottom:1px dotted rgba(201,160,62,0.18);}
+  .price-line .name{font-size:0.92rem; color:var(--ivory);}
+  .price-line .amt{font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--gold-bright); white-space:nowrap; padding-left:14px;}
+
+  .price-note{font-size:0.78rem; color:var(--ivory-dim); font-style:italic; margin-top:-30px; margin-bottom:30px;}
+
+  /* Natural styles - always visible below toggle */
+  .natural-block{margin-top:56px; padding-top:48px; border-top:1px solid var(--line);}
+
+  /* ---------- BOOKING ---------- */
+  .booking{background:var(--black-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .booking-grid{display:grid; grid-template-columns:0.85fr 1.15fr; gap:60px; align-items:start;}
+  .booking-info h2{font-size:2.2rem; font-style:italic; margin-bottom:16px;}
+  .booking-info p{color:var(--ivory-dim); font-size:0.92rem;}
+  .info-line{display:flex; gap:14px; margin-top:26px; align-items:flex-start;}
+  .info-line .dot{width:6px; height:6px; border-radius:50%; background:var(--gold-bright); margin-top:8px; flex-shrink:0;}
+  .info-line strong{display:block; color:var(--ivory); font-size:0.88rem; letter-spacing:0.02em;}
+  .info-line span{color:var(--ivory-dim); font-size:0.86rem;}
+
+  form{display:flex; flex-direction:column; gap:18px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  label{font-size:0.72rem; letter-spacing:0.08em; color:var(--gold-bright); margin-bottom:6px; display:block;}
+  input, select, textarea{
+    width:100%; background:transparent; border:none; border-bottom:1px solid var(--line);
+    color:var(--ivory); font-family:'Montserrat',sans-serif; font-size:0.92rem; padding:10px 2px;
+    outline:none; transition:border-color .2s;
+  }
+  input::placeholder, textarea::placeholder{color:#6b6250;}
+  input:focus, select:focus, textarea:focus{border-color:var(--gold-bright);}
+  select option{background:var(--black); color:var(--ivory);}
+  textarea{resize:vertical; min-height:70px;}
+  .submit-btn{
+    margin-top:8px; align-self:flex-start; background:var(--gold); color:var(--black); border:1px solid var(--gold);
+    padding:15px 36px; font-family:'Montserrat',sans-serif; font-size:0.82rem; letter-spacing:0.06em;
+    cursor:pointer; transition:all .2s;
+  }
+  .submit-btn:hover{background:transparent; color:var(--gold-bright);}
+  .form-note{font-size:0.76rem; color:var(--ivory-dim); margin-top:2px;}
+
+  .deposit-box{
+    border:1px solid var(--gold); padding:22px 24px; margin-top:6px;
+    background:rgba(201,160,62,0.06);
+  }
+  .deposit-label{font-size:0.72rem; letter-spacing:0.08em; color:var(--gold-bright); margin-bottom:8px;}
+  .deposit-amount{font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-style:italic; color:var(--ivory); margin-bottom:16px;}
+  .deposit-box .btn{width:100%; text-align:center; box-sizing:border-box;}
+  .deposit-box .btn[aria-disabled="true"]{pointer-events:none; opacity:0.45;}
+  .deposit-box .form-note{margin-top:14px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:56px 0 40px;}
+  .footer-grid{display:flex; justify-content:space-between; flex-wrap:wrap; gap:30px; border-top:1px solid var(--line); padding-top:36px;}
+  footer .brand{font-size:1.1rem;}
+  footer .brand .script{font-size:1.6rem;}
+  .footer-cols{display:flex; gap:70px; flex-wrap:wrap;}
+  .footer-col h4{font-size:0.75rem; letter-spacing:0.1em; color:var(--gold-bright); margin-bottom:12px; font-family:'Montserrat',sans-serif; font-weight:500;}
+  .footer-col p, .footer-col a{font-size:0.86rem; color:var(--ivory-dim); text-decoration:none; display:block; margin-bottom:6px;}
+  .footer-tag{margin-top:40px; text-align:center; color:#6b6250; font-size:0.78rem; letter-spacing:0.03em;}
+
+  @media (max-width:820px){
+    nav ul{display:none;}
+    .about .wrap{grid-template-columns:1fr; gap:20px; padding:36px 28px;}
+    .price-groups{grid-template-columns:1fr;}
+    .price-note{margin-top:0;}
+    .booking-grid{grid-template-columns:1fr;}
+    .field-row{grid-template-columns:1fr;}
+    .footer-grid{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">HAIRSTYLE BY <span class="script">Swan</span></div>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#book">Book</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#book" class="nav-book">Book Now</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner wrap">
+    <span class="hero-eyebrow">BEAUTIFUL HAIR, BEAUTIFUL YOU</span>
+    <h1>Walk in. Sit down.<br>Leave beautiful.</h1>
+    <p>Braids, weaves, wigs, natural hair and treatments — booked in a few taps, confirmed straight to your inbox.</p>
+    <div class="hero-actions">
+      <a href="#book" class="btn btn-gold">Book an appointment</a>
+      <a href="#services" class="btn btn-ghost">View price list</a>
+    </div>
+  </div>
+</div>
+
+<div class="about">
+  <div class="wrap">
+    <div class="about-item">
+      <div class="num">Sun – Sat</div>
+      <p>Open every day of the week</p>
+    </div>
+    <div class="about-item">
+      <div class="num">4</div>
+      <p>Service categories: braids, weaves, wigs &amp; natural hair</p>
+    </div>
+    <div class="about-item">
+      <div class="num">2</div>
+      <p>Choose your own hair, or have it included</p>
+    </div>
+  </div>
+</div>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">PRICE LIST</span>
+      <h2>Services &amp; pricing</h2>
+      <p>Prices below cover styling only unless marked "hair included." Choose whichever fits how you'd like to come in.</p>
+    </div>
+
+    <div class="toggle-row">
+      <button class="toggle-btn active" data-panel="own">Bring your own hair</button>
+      <button class="toggle-btn" data-panel="included">Hair included</button>
+    </div>
+
+    <div class="price-panel active" id="panel-own">
+      <p class="price-note">Hair is not included in the prices below — bring your own bundles, braiding hair or wig.</p>
+      <div class="price-groups">
+        <div class="price-group">
+          <h3>Braids &amp; protective styles</h3>
+          <div class="price-line"><span class="name">Box braids</span><span class="amt">$120</span></div>
+          <div class="price-line"><span class="name">Knotless braids</span><span class="amt">$150</span></div>
+          <div class="price-line"><span class="name">Cornrows / feed-ins</span><span class="amt">$50</span></div>
+          <div class="price-line"><span class="name">Goddess braids</span><span class="amt">$150</span></div>
+          <div class="price-line"><span class="name">Faux locs / soft locs</span><span class="amt">$180</span></div>
+          <div class="price-line"><span class="name">Twists — Senegalese / Marley</span><span class="amt">$110</span></div>
+        </div>
+        <div class="price-group">
+          <h3>Weaves &amp; sew-in</h3>
+          <div class="price-line"><span class="name">Traditional sew-in w/ leave-out</span><span class="amt">$105</span></div>
+          <div class="price-line"><span class="name">Closure sew-in</span><span class="amt">$140</span></div>
+          <div class="price-line"><span class="name">Frontal sew-in</span><span class="amt">$180</span></div>
+          <div class="price-line"><span class="name">Quick weave</span><span class="amt">$80</span></div>
+          <div class="price-line"><span class="name">Vixen / versatile sew-in</span><span class="amt">$160</span></div>
+        </div>
+        <div class="price-group">
+          <h3>Wigs &amp; install <span style="font-size:0.7rem; color:var(--ivory-dim); font-style:italic;">(install only)</span></h3>
+          <div class="price-line"><span class="name">Glueless wig install</span><span class="amt">$50</span></div>
+          <div class="price-line"><span class="name">Lace frontal wig</span><span class="amt">$100</span></div>
+          <div class="price-line"><span class="name">Closure wig install</span><span class="amt">$80</span></div>
+          <div class="price-line"><span class="name">Custom wig making</span><span class="amt">$120</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-panel" id="panel-included">
+      <p class="price-note">Hair is included in the prices below — no need to bring your own.</p>
+      <div class="price-groups">
+        <div class="price-group">
+          <h3>Braids &amp; protective styles</h3>
+          <div class="price-line"><span class="name">Box braids</span><span class="amt">$210</span></div>
+          <div class="price-line"><span class="name">Knotless braids</span><span class="amt">$250</span></div>
+          <div class="price-line"><span class="name">Cornrows / feed-ins</span><span class="amt">$100</span></div>
+          <div class="price-line"><span class="name">Goddess braids</span><span class="amt">$250</span></div>
+          <div class="price-line"><span class="name">Faux locs / soft locs</span><span class="amt">$280</span></div>
+          <div class="price-line"><span class="name">Twists — Senegalese / Marley</span><span class="amt">$210</span></div>
+        </div>
+        <div class="price-group">
+          <h3>Weaves &amp; sew-in</h3>
+          <div class="price-line"><span class="name">Traditional sew-in w/ leave-out</span><span class="amt">$250</span></div>
+          <div class="price-line"><span class="name">Closure sew-in</span><span class="amt">$300</span></div>
+          <div class="price-line"><span class="name">Frontal sew-in</span><span class="amt">$350</span></div>
+          <div class="price-line"><span class="name">Quick weave</span><span class="amt">$180</span></div>
+          <div class="price-line"><span class="name">Vixen / versatile sew-in</span><span class="amt">$320</span></div>
+        </div>
+        <div class="price-group">
+          <h3>Wigs &amp; install <span style="font-size:0.7rem; color:var(--ivory-dim); font-style:italic;">(wig + install)</span></h3>
+          <div class="price-line"><span class="name">Glueless wig install</span><span class="amt">$180</span></div>
+          <div class="price-line"><span class="name">Lace frontal wig</span><span class="amt">$280</span></div>
+          <div class="price-line"><span class="name">Closure wig install</span><span class="amt">$230</span></div>
+          <div class="price-line"><span class="name">Custom wig making</span><span class="amt">$340</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="natural-block">
+      <div class="price-groups">
+        <div class="price-group">
+          <h3>Natural styles &amp; treatment</h3>
+          <div class="price-line"><span class="name">Silk press</span><span class="amt">$70</span></div>
+          <div class="price-line"><span class="name">Wash &amp; go / curl set</span><span class="amt">$50</span></div>
+          <div class="price-line"><span class="name">Locs — starter</span><span class="amt">$110</span></div>
+          <div class="price-line"><span class="name">Crochet braids</span><span class="amt">$100</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="booking" id="book">
+  <div class="wrap">
+    <section style="padding:88px 0;">
+      <div class="booking-grid">
+        <div class="booking-info">
+          <span class="kicker" style="color:var(--gold); font-size:0.78rem; letter-spacing:0.14em; display:block; margin-bottom:10px;">BOOK YOUR SEAT</span>
+          <h2>Reserve your appointment</h2>
+          <p>Pick a service, choose a date that works for you, and pay a small deposit to activate the slot — you'll get an email confirming everything.</p>
+          <div class="info-line"><div class="dot"></div><div><strong>Open Sunday – Saturday</strong><span>We've got you covered every day!</span></div></div>
+          <div class="info-line"><div class="dot"></div><div><strong>30% deposit activates your slot</strong><span>Pay by card via Square, or upload a photo of your gift card below</span></div></div>
+          <div class="info-line"><div class="dot"></div><div><strong>Gift card bookings are approved manually</strong><span>We review your photo and confirm by email — no automatic charge</span></div></div>
+          <div class="info-line"><div class="dot"></div><div><strong>liamcharlotte297@gmail.com</strong><span>Reach out with questions any time</span></div></div>
+        </div>
+
+        <form action="https://formsubmit.co/liamcharlotte297@gmail.com" method="POST" id="bookingForm" enctype="multipart/form-data">
+          <input type="hidden" name="_subject" value="New booking request — Hairstyle by Swan">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_autoresponse" value="Thank you for booking with Hairstyle by Swan! We've received your request and your gift card photo. Your appointment is pending approval — we'll review your payment and send a confirmation once it's verified. If you don't hear from us within 24 hours, feel free to email liamcharlotte297@gmail.com. Beautiful hair, beautiful you.">
+
+          <div class="field-row">
+            <div>
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="Name" placeholder="Your name" required>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="you@email.com" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div>
+              <label for="phone">Phone number</label>
+              <input type="tel" id="phone" name="Phone" placeholder="(000) 000-0000" required>
+            </div>
+            <div>
+              <label for="service">Service</label>
+              <select id="service" name="Service" required>
+                <option value="" disabled selected>Select a service</option>
+                <optgroup label="Braids (hair not included)">
+                  <option>Box braids — $120</option>
+                  <option>Knotless braids — $150</option>
+                  <option>Cornrows / feed-ins — $50</option>
+                  <option>Goddess braids — $150</option>
+                  <option>Faux locs / soft locs — $180</option>
+                  <option>Twists Senegalese/Marley — $110</option>
+                </optgroup>
+                <optgroup label="Weaves & sew-in (hair not included)">
+                  <option>Traditional sew-in w/leave-out — $105</option>
+                  <option>Closure sew-in — $140</option>
+                  <option>Frontal sew-in — $180</option>
+                  <option>Quick weave — $80</option>
+                  <option>Vixen/versatile sew-in — $160</option>
+                </optgroup>
+                <optgroup label="Wigs & install (install only)">
+                  <option>Glueless wig install — $50</option>
+                  <option>Lace frontal wig — $100</option>
+                  <option>Closure wig install — $80</option>
+                  <option>Custom wig making — $120</option>
+                </optgroup>
+                <optgroup label="Natural styles & treatment">
+                  <option>Silk press — $70</option>
+                  <option>Wash & go/curl set — $50</option>
+                  <option>Locs starter — $110</option>
+                  <option>Crochet braids — $100</option>
+                </optgroup>
+                <optgroup label="Braids (hair included)">
+                  <option>Box braids — $210</option>
+                  <option>Knotless braids — $250</option>
+                  <option>Cornrows / feed-ins — $100</option>
+                  <option>Goddess braids — $250</option>
+                  <option>Faux locs / soft locs — $280</option>
+                  <option>Twists Senegalese/Marley — $210</option>
+                </optgroup>
+                <optgroup label="Weaves & sew-in (hair included)">
+                  <option>Traditional sew-in w/leave-out — $250</option>
+                  <option>Closure sew-in — $300</option>
+                  <option>Frontal sew-in — $350</option>
+                  <option>Quick weave — $180</option>
+                  <option>Vixen/versatile sew-in — $320</option>
+                </optgroup>
+                <optgroup label="Wigs & install (wig + install)">
+                  <option>Glueless wig install — $180</option>
+                  <option>Lace frontal wig — $280</option>
+                  <option>Closure wig install — $230</option>
+                  <option>Custom wig making — $340</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div>
+              <label for="date">Preferred date</label>
+              <input type="date" id="date" name="Preferred_Date" required>
+            </div>
+            <div>
+              <label for="time">Preferred time</label>
+              <input type="time" id="time" name="Preferred_Time" required>
+            </div>
+          </div>
+
+          <div>
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" name="Notes" placeholder="Hair length, inspo photos you'll bring, anything we should know"></textarea>
+          </div>
+
+          <input type="hidden" name="Deposit_Due" id="depositHidden" value="">
+
+          <div class="deposit-box" id="depositBox">
+            <div class="deposit-label">DEPOSIT TO ACTIVATE THIS APPOINTMENT</div>
+            <div class="deposit-amount" id="depositAmount">Select a service above to see your deposit</div>
+            <a href="#" target="_blank" rel="noopener" class="btn btn-gold" id="payDepositBtn" aria-disabled="true">Pay deposit via Square</a>
+            <p class="form-note">Pay by card, or redeem a Hairstyle by Swan gift card at checkout.</p>
+          </div>
+
+          <div class="deposit-box" id="giftCardBox">
+            <div class="deposit-label">PAID WITH A GIFT CARD? UPLOAD YOUR PROOF</div>
+            <p class="form-note" style="margin-top:0; margin-bottom:14px;">Already paid using a Hairstyle by Swan gift card? Attach a clear photo of the card here instead. Your appointment stays <strong style="color:var(--gold-bright); font-weight:500;">pending until we approve it</strong> — you'll get an email as soon as it's confirmed.</p>
+            <label for="giftCardPhoto">Gift card photo</label>
+            <input type="file" id="giftCardPhoto" name="attachment" accept="image/*">
+          </div>
+
+          <button type="submit" class="submit-btn">Submit for approval</button>
+          <p class="form-note">Your booking is pending until we verify payment and approve it — you'll get an email either way.</p>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="brand">HAIRSTYLE BY <span class="script">Swan</span></div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>CONTACT</h4>
+          <a href="mailto:liamcharlotte297@gmail.com">liamcharlotte297@gmail.com</a>
+        </div>
+        <div class="footer-col">
+          <h4>HOURS</h4>
+          <p>Sunday – Saturday</p>
+          <p>We've got you covered every day!</p>
+        </div>
+        <div class="footer-col">
+          <h4>SERVICES</h4>
+          <p>Braids · Weaves · Wigs</p>
+          <p>Natural hair · Relaxers · Treatments</p>
+        </div>
+      </div>
+    </div>
+    <p class="footer-tag">Walk in. Sit down. Leave beautiful.</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.toggle-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.price-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+    });
+  });
+
+  // set min date on the date picker to today
+  document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
+  // ---- Deposit / gift-card payment ----
+  // 1. Create a free Square account, turn on Gift Cards (Items & services > Gift Cards) so clients can buy/redeem them.
+  // 2. In Square Dashboard: Checkout links > Create link > "Collect a payment" > toggle ON "Allow buyer to set the price".
+  // 3. Paste that one link below. Square's checkout page already lets buyers pay by card OR a Hairstyle by Swan gift card.
+  const SQUARE_PAYMENT_LINK = "PASTE_YOUR_SQUARE_CHECKOUT_LINK_HERE";
+  const DEPOSIT_RATE = 0.30; // 30% deposit — change this number to adjust the percentage
+
+  const serviceSelect = document.getElementById('service');
+  const depositAmountEl = document.getElementById('depositAmount');
+  const depositHidden = document.getElementById('depositHidden');
+  const payBtn = document.getElementById('payDepositBtn');
+
+  serviceSelect.addEventListener('change', function(){
+    const match = this.value.match(/\$(\d+)/);
+    if(match){
+      const price = parseInt(match[1], 10);
+      const deposit = Math.round(price * DEPOSIT_RATE);
+      depositAmountEl.textContent = '$' + deposit + ' due now — 30% of $' + price;
+      depositHidden.value = '$' + deposit;
+      payBtn.href = SQUARE_PAYMENT_LINK;
+      payBtn.setAttribute('aria-disabled', 'false');
+    } else {
+      depositAmountEl.textContent = 'Select a service above to see your deposit';
+      depositHidden.value = '';
+      payBtn.href = '#';
+      payBtn.setAttribute('aria-disabled', 'true');
+    }
+  });
+</script>
+
+</body>
+</html>
